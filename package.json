@@ -1,0 +1,19 @@
+{
+  "name": "database_designer_app",
+  "version": "1.0.0",
+  "description": "Boilerplate for React and Express App",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js"
+  },
+  "author": "Nishad Guha",
+  "license": "MIT",
+  "dependencies": {
+    "concurrently": "^6.0.2",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
