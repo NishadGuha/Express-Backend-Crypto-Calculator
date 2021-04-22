@@ -2,5 +2,5 @@
 
 ### Please clone the react frontend repository first since it is an embedded repository.
 
-#### In order to install dependencies run: ``npm install`` and ``npm client-install``
+#### In order to install dependencies run: ``npm install`` and ``npm run client-install``
 #### In order to run app: ``npm run dev``
