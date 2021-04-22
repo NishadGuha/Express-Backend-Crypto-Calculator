@@ -3,6 +3,10 @@ const app = express();
 const port = 5000;
 const rp = require('request-promise');
 
+/**
+ * Define request optins along with API key for CMC API
+ * This requests the top 10 cryptocurrencies by CMC rank
+ */
 const requestOptions = {
   method: 'GET',
   uri: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
@@ -18,15 +22,21 @@ const requestOptions = {
   gzip: true
 };
 
+/**
+ * Route that returns the response containing the JSON data of the cmc request
+ */
 app.get('/api/crypto', (req, res) => {
 
     rp(requestOptions).then(response => {
-        res.json(response);
+        res.send(response);
         }).catch((err) => {
         console.log('API call error:', err.message);
         });
 })
 
+/**
+ * Dummy route for dummy data
+ */
 app.get('/api/customers', (req, res) => {
 
     const customers = [
