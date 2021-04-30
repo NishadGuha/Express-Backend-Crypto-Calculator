@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = 5000;
 const rp = require('request-promise');
+app.use(express.json());
 
 /**
  * Define request optins along with API key for CMC API
@@ -34,19 +35,14 @@ app.get('/api/crypto', (req, res) => {
         });
 })
 
-/**
- * Dummy route for dummy data
- */
-app.get('/api/customers', (req, res) => {
-
-    const customers = [
-        {id: 1, firstName: 'John', lastName: 'Doe'},
-        {id: 2, firstName: 'Mike', lastName: 'Johnson'},
-        {id: 3, firstName: 'Vivek', lastName: 'Puri'}
-    ];
-
-    res.json(customers);
-    console.log(req.baseUrl);
-})
+app.post('/result', (req, res) => {
+  console.log("I got a request!");
+  console.log(req.body);
+  res.json({
+      status: "success",
+      amount: req.body.amount,
+      date: req.body.date
+    })
+});
 
 app.listen(port, () => console.log(`Server has started on port ${port}`));
