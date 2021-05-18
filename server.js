@@ -42,7 +42,7 @@ app.post('/result', (req, res) => {
   console.log("I got a request!");
   console.log(req.body);
 
-  let pr = new Promise((resolve, reject) => {
+  let historicPricePromise = new Promise((resolve, reject) => {
     let data = CoinGeckoClient.coins.fetchHistory('bitcoin', {
       date: req.body.newDate
     });
@@ -53,8 +53,30 @@ app.post('/result', (req, res) => {
     }
   });
 
-  pr.then((message) => {
-    console.log(message.data.market_data.current_price.usd)
+  let currentPricePromise = new Promise((resolve, reject) => {
+    let data =  CoinGeckoClient.coins.fetch('bitcoin', {
+      market_data: true
+    });
+    if(data != null) {
+      resolve(data)
+    } else {
+      reject("API did not return any data")
+    }
+  })
+
+  historicPricePromise.then((message) => {
+    var historicPrice = message.data.market_data.current_price.usd;
+    var historicCryptoValue = message.data.market_data.current_price.usd/req.body.amount;
+
+    var currentPrice = currentPricePromise.then(function (currentPriceMessage) {
+      return currentPriceMessage.market_data.current_price.usd;
+    }).catch((err) => {
+      console.log("Error fetching current day price");
+    });
+
+    var currentFiatValue = historicCryptoValue * currentPrice;
+
+    console.log(`You had bought ${historicCryptoValue} BTC at ${historicPrice} and you would now have ${currentFiatValue} dollars!`);
   }).catch((err) => {
     console.log(err)
   })
