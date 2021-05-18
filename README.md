@@ -6,3 +6,5 @@
 #### In order to run app: ``npm run dev``
 
 ##### This app displays the prices and 24h change of the top 10 cryptocurrencies. Calculator functions for PnL coming soon.
+
+#### CoinGecko-API used: https://github.com/miscavage/CoinGecko-API
