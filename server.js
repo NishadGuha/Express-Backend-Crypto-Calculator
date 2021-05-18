@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = 5000;
 const rp = require('request-promise');
+const https = require('https');
 app.use(express.json());
 
 /**
@@ -38,27 +39,44 @@ app.get('/api/crypto', (req, res) => {
 app.post('/result', (req, res) => {
   console.log("I got a request!");
   console.log(req.body);
-  //@TODO: Fetch appropriate data from CMC API and calculate result and send it in the response.
+  //@TODO: Fetch appropriate data from API and calculate result and send it in the response.
 
-  const requestOptions_historical = {
-    method: 'GET',
-    uri: `https://rest.coinapi.io/v1/exchangerate/BTC/USD/history?period_id=1MIN&time_start=${req.body.date}T00:00:00&time_end=${req.body.date}T00:01:00`,
-    headers: {
-      'X-CoinAPI-Key': 'D6D1F221-44F9-4C37-9DC6-5241251431D8'
-    },
-    json: true,
+  var requestOptions_historical = {
+    "method": "GET",
+    "hostname": "rest.coinapi.io",
+    "path": `/v1/exchangerate/BTC/USD/history?period_id=1MIN&time_start=${req.body.date}T00:00:00&time_end=${req.body.date}T00:01:00`,
+    "headers": {'X-CoinAPI-Key': 'D6D1F221-44F9-4C37-9DC6-5241251431D8'}
   };
 
-  rp(requestOptions_historical).then(response => {
-    res.json({
-      status: "success",
-      amount: req.body.amount,
-      date: req.body.date,
-      price_at_date: response
-    })
-    }).catch((err) => {
-    console.log('API call error:', err.message);
+  // const requestOptions_historical = {
+  //   method: 'GET',
+  //   uri: `https://rest.coinapi.io/v1/exchangerate/BTC/USD/history?period_id=1MIN&time_start=${req.body.date}T00:00:00&time_end=${req.body.date}T00:01:00`,
+  //   headers: {
+  //     'X-CoinAPI-Key': 'D6D1F221-44F9-4C37-9DC6-5241251431D8'
+  //   },
+  //   json: true,
+  // };
+
+  // rp(requestOptions_historical).then(response => {
+  //   res.json({
+  //     status: "success",
+  //     amount: req.body.amount,
+  //     date: req.body.date,
+  //     price_at_date: response
+  //   })
+  //   }).catch((err) => {
+  //   console.log('API call error:', err.message);
+  //   });
+
+  var request = https.request(requestOptions_historical, function (response) {
+    var chunks = [];
+    response.on("data", function (chunk) {
+      chunks.push(chunk);
     });
+    console.log(chunks);
+  });
+  
+  request.end();
 });
 
 app.listen(port, () => console.log(`Server has started on port ${port}`));
