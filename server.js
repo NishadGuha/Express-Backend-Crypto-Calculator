@@ -77,7 +77,8 @@ app.post('/result', (req, res) => {
       var currentFiatValue = historicCryptoValue * currentPrice;
       var jsonResponse = {
         status: "success",
-        message: `You had bought ${historicCryptoValue} BTC at ${historicPrice} and you would now have ${currentFiatValue} dollars!`
+        message: `You had bought ${historicCryptoValue} BTC at ${historicPrice} and you would now have ${currentFiatValue} dollars!`,
+        currentFiat: currentFiatValue
       };
       res.json(jsonResponse);
     }).catch((err) => {
